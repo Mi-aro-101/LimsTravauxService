@@ -9,4 +9,5 @@ public class TravauxContext : DbContext
     {}
 
     public DbSet<TypeTravaux> TypeTravaux { get; set; }
+    public DbSet<HistoriqueTarif> HistoriqueTarifs { get; set; }
 }

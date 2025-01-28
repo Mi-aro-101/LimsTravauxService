@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using LimsTravauxService.Models;
 using LimsTravauxService.Services;
 using LimsTravauxService.Utils;
+using LimsTravauxService.Dto;
 
 namespace LimsTravauxService.Controllers;
 
@@ -37,5 +38,58 @@ public class TypeTravauxController : ControllerBase
                 Message = "Datas retrieved successfully.",
                 StatusCode = 200
             });
+    }
+
+    [HttpPost]
+    public async Task<ActionResult<ApiResponse>> CreateTypeTravaux([FromBody] TypeTravauxDto typeTravauxDto)
+    {
+        TypeTravaux typeTravaux = await _typeTravauxService.CreateTypeTravaux(typeTravauxDto);
+        return Ok(new ApiResponse
+        {
+            Data = typeTravaux,
+            IsSuccess = true,
+            Message = "Type de travail créé avec succès.",
+            StatusCode = 201
+        });
+    }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<ApiResponse>> GetTypeTravaux(int id)
+    {
+        TypeTravaux typeTravaux = await _typeTravauxService.GetTypeTravaux(id);
+        if (typeTravaux == null)
+        {
+            return NotFound(new ApiResponse
+            {
+                IsSuccess = false,
+                Message = $"Type de travail avec l'id {id} n'existe pas.",
+                StatusCode = 404
+            });
+        }
+        return Ok(new ApiResponse
+        {
+            Data = typeTravaux,
+            IsSuccess = true,
+            Message = "Type de travail récupéré avec succès.",
+            StatusCode = 200
+        });
+    }
+
+    [HttpPut("{id}")]
+    public async Task<ActionResult<ApiResponse>> UpdateTypeTravaux(int id, [FromBody] TypeTravauxDto typeTravauxDto)
+    {
+        TypeTravaux typeTravaux = await _typeTravauxService.UpdateTypeTravaux(id, typeTravauxDto);
+        if (typeTravaux == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(new ApiResponse
+        {
+            Data = typeTravaux,
+            IsSuccess = true,
+            Message = "Type de travail mis à jour avec succès.",
+            StatusCode = 200
+        });
     }
 }
