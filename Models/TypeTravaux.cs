@@ -34,5 +34,5 @@ public class TypeTravaux
     [ForeignKey("IdDepartement")]
     public Departement? Departement { get; set; }
     [NotMapped]
-    public decimal? Tarif { get; set; }
+    public HistoriqueTarif? Tarif { get; set; }
 }

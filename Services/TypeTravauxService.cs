@@ -31,7 +31,6 @@ public class TypeTravauxService : ITypeTravauxService
                 Tarif = _dbContext.HistoriqueTarifs
                     .Where(ht => ht.IdTypeTravaux == tt.IdTypeTravaux)
                     .OrderByDescending(ht => ht.DateChangement)
-                    .Select(ht => ht.Tarif)
                     .FirstOrDefault()
             })
             .Skip(skiped).Take(size)
@@ -85,7 +84,6 @@ public class TypeTravauxService : ITypeTravauxService
                 Tarif = _dbContext.HistoriqueTarifs
                     .Where(ht => ht.IdTypeTravaux == tt.IdTypeTravaux)
                     .OrderByDescending(ht => ht.DateChangement)
-                    .Select(ht => ht.Tarif)
                     .FirstOrDefault()
             })
             .FirstAsync();
@@ -100,20 +98,30 @@ public class TypeTravauxService : ITypeTravauxService
         typeTravauxToUpdate = typeTravauxToUpdate.FromDto(typeTravauxDto);
         using(var transaction = await _dbContext.Database.BeginTransactionAsync())
         {
-            _dbContext.Update(typeTravauxToUpdate);
-            await _dbContext.SaveChangesAsync();
-
-            if(typeTravauxDto.Tarif != typeTravaux.Tarif)
-            {
-                HistoriqueTarif historiqueTarif = new HistoriqueTarif();
-                historiqueTarif.DateChangement = typeTravauxDto.DateCreation;
-                historiqueTarif.IdTypeTravaux = id;
-                historiqueTarif.Tarif = typeTravauxDto.Tarif?? 0;
-
-                _dbContext.HistoriqueTarifs.Add(historiqueTarif);
+            try{
+                _dbContext.Update(typeTravauxToUpdate);
                 await _dbContext.SaveChangesAsync();
+
+                if(typeTravauxDto.Tarif != typeTravaux.Tarif.Tarif)
+                {
+                    HistoriqueTarif historiqueTarif = new HistoriqueTarif();
+                    if(typeTravauxDto.DateCreation < typeTravaux.Tarif.DateChangement)
+                    {
+                        transaction.Rollback();
+                        throw new ArgumentException("La date de changement de tarif ne peut pas être avant");
+                    }
+                    historiqueTarif.DateChangement = typeTravauxDto.DateCreation;
+                    historiqueTarif.IdTypeTravaux = id;
+                    historiqueTarif.Tarif = typeTravauxDto.Tarif?? 0;
+
+                    _dbContext.HistoriqueTarifs.Add(historiqueTarif);
+                    await _dbContext.SaveChangesAsync();
+                }
+                await transaction.CommitAsync();
+            }catch (Exception){
+                transaction.Rollback();
+                throw;
             }
-            await transaction.CommitAsync();
         }
 
         return await this.GetTypeTravaux(id);
