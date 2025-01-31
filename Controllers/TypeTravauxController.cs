@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using LimsTravauxService.Models;
 using LimsTravauxService.Services;
-using LimsTravauxService.Utils;
 using LimsTravauxService.Dto;
+using LimsUtils.Api;
 
 namespace LimsTravauxService.Controllers;
 
