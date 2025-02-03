@@ -15,4 +15,6 @@ public class HistoriqueTarif
     public DateTime? DateChangement { get; set; }
     [Column("id_type_travaux")]
     public int IdTypeTravaux { get; set; }
+    [ForeignKey("IdTypeTravaux")]
+    public TypeTravaux? TypeTravaux { get; set; }
 }
