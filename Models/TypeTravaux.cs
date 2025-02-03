@@ -33,6 +33,9 @@ public class TypeTravaux
     public int IdDepartement { get; set; }
     [ForeignKey("IdDepartement")]
     public Departement? Departement { get; set; }
+    [Column("date_creation")]
+    public DateTime? DateCreation { get; set; }
+    public ICollection<HistoriqueTarif> HistoriqueTarifs { get; set; } = new List<HistoriqueTarif>();
     [NotMapped]
     public decimal? Tarif { get; set; }
 }

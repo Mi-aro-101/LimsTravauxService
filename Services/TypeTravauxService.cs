@@ -28,6 +28,7 @@ public class TypeTravauxService : ITypeTravauxService
                 HasResultat = tt.HasResultat,
                 IdDepartement = tt.IdDepartement,
                 Departement = tt.Departement,
+                DateCreation = tt.DateCreation,
                 Tarif = _dbContext.HistoriqueTarifs
                     .Where(ht => ht.IdTypeTravaux == tt.IdTypeTravaux)
                     .OrderByDescending(ht => ht.DateChangement)
@@ -83,11 +84,16 @@ public class TypeTravauxService : ITypeTravauxService
                 HasResultat = tt.HasResultat,
                 IdDepartement = tt.IdDepartement,
                 Departement = tt.Departement,
+                DateCreation = tt.DateCreation,
                 Tarif = _dbContext.HistoriqueTarifs
                     .Where(ht => ht.IdTypeTravaux == tt.IdTypeTravaux)
-                    .OrderByDescending(ht => ht.DateChangement)
+                    .OrderByDescending(ht => ht.IdHistoriqueTarif)
                     .Select(ht => ht.Tarif)
-                    .FirstOrDefault()
+                    .FirstOrDefault(),
+                HistoriqueTarifs = tt.HistoriqueTarifs
+                    .Where(ht => ht.IdTypeTravaux == tt.IdTypeTravaux)
+                    .OrderByDescending(ht => ht.IdHistoriqueTarif)
+                    .ToList(),
             })
             .FirstAsync();
 
@@ -108,7 +114,7 @@ public class TypeTravauxService : ITypeTravauxService
                 if(typeTravauxDto.Tarif != typeTravaux.Tarif)
                 {
                     HistoriqueTarif historiqueTarif = new HistoriqueTarif();
-                    historiqueTarif.DateChangement = typeTravauxDto.DateCreation;
+                    historiqueTarif.DateChangement = typeTravauxDto.DateChangement;
                     historiqueTarif.IdTypeTravaux = id;
                     historiqueTarif.Tarif = typeTravauxDto.Tarif;
 
