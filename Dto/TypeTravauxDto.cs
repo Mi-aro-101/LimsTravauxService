@@ -18,10 +18,14 @@ public class TypeTravauxDto
     [JsonPropertyName("departement")]
     public Departement? Departement { get; set; }
     [JsonPropertyName("tarif")]
-    public decimal Tarif { get; set; }
+    public decimal? Tarif { get; set; }
     [JsonPropertyName("dateCreation")]
     public DateTime? DateCreation { get; set; }
     [JsonPropertyName("dateChangement")]
     public DateTime? DateChangement { get; set; }
+    [JsonPropertyName("haveFormule")]
+    public int HaveFormule { get; set; }
+    [JsonPropertyName("formuleString")]
+    public string? FormuleString { get; set; }
 
 }

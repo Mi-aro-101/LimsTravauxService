@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json;
 using LimsTravauxService.Dto;
+using LimsUtils.Utility;
 
 namespace LimsTravauxService.Models;
 
@@ -20,6 +21,12 @@ public class TypeTravaux
         return typeTravaux;
     }
 
+    public void LoadFormule()
+    {
+        string filePath = $"./assets/{this.Code}.txt";
+        this.FormuleString = FileReader.ReadFile(filePath);
+    }
+
     [Key]
     [Column("id_type_travaux")]
     public int IdTypeTravaux { get; set; }
@@ -27,7 +34,7 @@ public class TypeTravaux
     public string Code { get; set; }
     [Column("designation")]
     public string Designation { get; set; }
-    [Column("hasResultat")]
+    [Column("has_resultat")]
     public int HasResultat { get; set; }
     [Column("id_departement")]
     public int IdDepartement { get; set; }
@@ -35,7 +42,11 @@ public class TypeTravaux
     public Departement? Departement { get; set; }
     [Column("date_creation")]
     public DateTime? DateCreation { get; set; }
+    [Column("have_formule")]
+    public int HaveFormule { get; set; }
     public ICollection<HistoriqueTarif> HistoriqueTarifs { get; set; } = new List<HistoriqueTarif>();
     [NotMapped]
     public decimal? Tarif { get; set; }
+    [NotMapped]
+    public string? FormuleString { get; set; }
 }

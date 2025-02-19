@@ -29,15 +29,24 @@ public class TypeTravauxService : ITypeTravauxService
                 IdDepartement = tt.IdDepartement,
                 Departement = tt.Departement,
                 DateCreation = tt.DateCreation,
+                HaveFormule = tt.HaveFormule,
                 Tarif = _dbContext.HistoriqueTarifs
                     .Where(ht => ht.IdTypeTravaux == tt.IdTypeTravaux)
-                    .OrderByDescending(ht => ht.DateChangement)
+                    .OrderByDescending(ht => ht.IdHistoriqueTarif)
                     .Select(ht => ht.Tarif)
                     .First()
             })
             .OrderByDescending(tt => tt.IdTypeTravaux)
             .Skip(skiped).Take(size)
             .ToListAsync();
+        
+        foreach(TypeTravaux typetravaux in results)
+        {
+            if(typetravaux.HaveFormule == 1)
+            {
+                typetravaux.LoadFormule();
+            }
+        }
 
         return results;
     }
@@ -63,7 +72,8 @@ public class TypeTravauxService : ITypeTravauxService
             HistoriqueTarif historiqueTarif = new HistoriqueTarif();
             historiqueTarif.DateChangement = typeTravauxDto.DateCreation;
             historiqueTarif.IdTypeTravaux = typeTravaux.IdTypeTravaux;
-            historiqueTarif.Tarif = typeTravauxDto.Tarif;
+            if(typeTravauxDto.Tarif.HasValue){ historiqueTarif.Tarif = typeTravauxDto.Tarif.Value; }
+            else{ historiqueTarif.Tarif = 0; }
             _dbContext.HistoriqueTarifs.Add(historiqueTarif);
             await _dbContext.SaveChangesAsync();
 
@@ -85,6 +95,7 @@ public class TypeTravauxService : ITypeTravauxService
                 IdDepartement = tt.IdDepartement,
                 Departement = tt.Departement,
                 DateCreation = tt.DateCreation,
+                HaveFormule = tt.HaveFormule,
                 Tarif = _dbContext.HistoriqueTarifs
                     .Where(ht => ht.IdTypeTravaux == tt.IdTypeTravaux)
                     .OrderByDescending(ht => ht.IdHistoriqueTarif)
@@ -96,6 +107,11 @@ public class TypeTravauxService : ITypeTravauxService
                     .ToList(),
             })
             .FirstAsync();
+
+            if(result.HaveFormule == 0)
+            {
+                result.LoadFormule();
+            }
 
             return result;
     }
@@ -116,7 +132,8 @@ public class TypeTravauxService : ITypeTravauxService
                     HistoriqueTarif historiqueTarif = new HistoriqueTarif();
                     historiqueTarif.DateChangement = typeTravauxDto.DateChangement;
                     historiqueTarif.IdTypeTravaux = id;
-                    historiqueTarif.Tarif = typeTravauxDto.Tarif;
+                    if(typeTravauxDto.Tarif.HasValue){ historiqueTarif.Tarif = typeTravauxDto.Tarif.Value; }
+                    else{ historiqueTarif.Tarif = 0; }
 
                     _dbContext.HistoriqueTarifs.Add(historiqueTarif);
                     await _dbContext.SaveChangesAsync();
