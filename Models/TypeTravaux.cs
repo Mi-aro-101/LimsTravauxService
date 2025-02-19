@@ -49,4 +49,6 @@ public class TypeTravaux
     public decimal? Tarif { get; set; }
     [NotMapped]
     public string? FormuleString { get; set; }
+    [NotMapped]
+    public ICollection<TypeTravauxTypeEchantillon> TypeTravauxTypeEchantillons { get; set; } = new List<TypeTravauxTypeEchantillon>();
 }

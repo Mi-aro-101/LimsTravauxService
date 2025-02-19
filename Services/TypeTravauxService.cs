@@ -16,10 +16,6 @@ public class TypeTravauxService : ITypeTravauxService
 
     public async Task<List<TypeTravaux>> GetTypeTravauxFrom(int skiped, int size)
     {
-        // List<TypeTravaux> results = await _dbContext.TypeTravaux
-        // .Include(tt => tt.Departement)
-        // .Skip(skiped).Take(size)
-        //     .ToListAsync();
         List<TypeTravaux> results = await _dbContext.TypeTravaux
             .Select(tt => new TypeTravaux {
                 IdTypeTravaux = tt.IdTypeTravaux,
@@ -34,7 +30,10 @@ public class TypeTravauxService : ITypeTravauxService
                     .Where(ht => ht.IdTypeTravaux == tt.IdTypeTravaux)
                     .OrderByDescending(ht => ht.IdHistoriqueTarif)
                     .Select(ht => ht.Tarif)
-                    .First()
+                    .First(),
+                TypeTravauxTypeEchantillons =  _dbContext.TypeTravauxTypeEchantillons
+                    .Where(te => te.IdTypeTravaux == tt.IdTypeTravaux)
+                    .ToList()
             })
             .OrderByDescending(tt => tt.IdTypeTravaux)
             .Skip(skiped).Take(size)
@@ -75,6 +74,12 @@ public class TypeTravauxService : ITypeTravauxService
             if(typeTravauxDto.Tarif.HasValue){ historiqueTarif.Tarif = typeTravauxDto.Tarif.Value; }
             else{ historiqueTarif.Tarif = 0; }
             _dbContext.HistoriqueTarifs.Add(historiqueTarif);
+
+            //create assignation typeTravaux_typeEchantillon and save in the table "Type_travaux_typeEchantillon
+            foreach (int idTypeEchantillon in typeTravauxDto.IdTypeEchantillons)
+            {
+                _dbContext.TypeTravauxTypeEchantillons.Add(new TypeTravauxTypeEchantillon {IdTypeEchantillon = idTypeEchantillon, IdTypeTravaux = typeTravaux.IdTypeTravaux}); 
+            }
             await _dbContext.SaveChangesAsync();
 
             await transaction.CommitAsync();
@@ -105,6 +110,9 @@ public class TypeTravauxService : ITypeTravauxService
                     .Where(ht => ht.IdTypeTravaux == tt.IdTypeTravaux)
                     .OrderByDescending(ht => ht.IdHistoriqueTarif)
                     .ToList(),
+                TypeTravauxTypeEchantillons =  _dbContext.TypeTravauxTypeEchantillons
+                    .Where(te => te.IdTypeTravaux == tt.IdTypeTravaux)
+                    .ToList()
             })
             .FirstAsync();
 

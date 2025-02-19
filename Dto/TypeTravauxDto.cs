@@ -15,8 +15,6 @@ public class TypeTravauxDto
     public int HasResultat { get; set; }
     [JsonPropertyName("idDepartement")]
     public int IdDepartement { get; set; }
-    [JsonPropertyName("departement")]
-    public Departement? Departement { get; set; }
     [JsonPropertyName("tarif")]
     public decimal? Tarif { get; set; }
     [JsonPropertyName("dateCreation")]
@@ -27,5 +25,8 @@ public class TypeTravauxDto
     public int HaveFormule { get; set; }
     [JsonPropertyName("formuleString")]
     public string? FormuleString { get; set; }
+
+    [JsonPropertyName("idtypeEchantillons")]
+    public ICollection<int> IdTypeEchantillons { get; set; }
 
 }
