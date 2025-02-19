@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace LimsTravauxService.Models;
 
@@ -16,5 +17,6 @@ public class HistoriqueTarif
     [Column("id_type_travaux")]
     public int IdTypeTravaux { get; set; }
     [ForeignKey("IdTypeTravaux")]
+    [JsonIgnore]
     public TypeTravaux? TypeTravaux { get; set; }
 }
