@@ -3,6 +3,7 @@ using LimsTravauxService.Models;
 using LimsTravauxService.Services;
 using LimsTravauxService.Dto;
 using LimsUtils.Api;
+using LimsFrontEnd.Utils;
 
 namespace LimsTravauxService.Controllers;
 
@@ -89,6 +90,20 @@ public class TypeTravauxController : ControllerBase
             Data = typeTravaux,
             IsSuccess = true,
             Message = "Type de travail mis à jour avec succès.",
+            StatusCode = 200
+        });
+    }
+
+    [HttpPost("tarifier/{id}")]
+    public async Task<ActionResult> Tarifier(int id, FormuleDto formuleDto)
+    {
+        Formule formule = new Formule();
+        formule = formule.Evaluer(formuleDto);
+        return Ok(new ApiResponse
+        {
+            Data = formule,
+            IsSuccess = true,
+            Message = "Formule calculée.",
             StatusCode = 200
         });
     }
