@@ -25,6 +25,7 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddScoped<ITypeTravauxService, TypeTravauxService>();
+builder.Services.AddScoped<IAvanceeTravailService, AvanceeTravailService>();
 
 builder.Services.AddControllers();
 
