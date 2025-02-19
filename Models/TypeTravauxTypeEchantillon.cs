@@ -18,7 +18,7 @@ public class TypeTravauxTypeEchantillon
 
     [Column("id_type_echantillon")]
     public int IdTypeEchantillon { get; set; }
-
+    [ForeignKey("IdTypeEchantillon")]
     public TypeEchantillon TypeEchantillon { get; set; }
 
 }

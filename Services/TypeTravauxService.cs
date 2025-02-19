@@ -33,6 +33,7 @@ public class TypeTravauxService : ITypeTravauxService
                     .First(),
                 TypeTravauxTypeEchantillons =  _dbContext.TypeTravauxTypeEchantillons
                     .Where(te => te.IdTypeTravaux == tt.IdTypeTravaux)
+                    .Include(te => te.TypeEchantillon)
                     .ToList()
             })
             .OrderByDescending(tt => tt.IdTypeTravaux)
@@ -112,6 +113,7 @@ public class TypeTravauxService : ITypeTravauxService
                     .ToList(),
                 TypeTravauxTypeEchantillons =  _dbContext.TypeTravauxTypeEchantillons
                     .Where(te => te.IdTypeTravaux == tt.IdTypeTravaux)
+                    .Include(te => te.TypeEchantillon)
                     .ToList()
             })
             .FirstAsync();
