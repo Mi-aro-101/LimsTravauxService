@@ -35,5 +35,6 @@ public class TravauxContext : DbContext
     public DbSet<TypeTravaux> TypeTravaux { get; set; }
     public DbSet<HistoriqueTarif> HistoriqueTarifs { get; set; }
     public DbSet<TypeTravauxTypeEchantillon> TypeTravauxTypeEchantillons { get; set; }
+    public DbSet<TypeEchantillon> TypeEchantillons { get; set; }
     public DbSet<AvanceeTravail> AvanceeTravaux { get; set; }
 }
