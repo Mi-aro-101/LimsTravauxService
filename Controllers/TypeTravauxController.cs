@@ -107,4 +107,17 @@ public class TypeTravauxController : ControllerBase
             StatusCode = 200
         });
     }
+
+    [HttpGet("all")]
+    public async Task<ActionResult<ApiResponse>> GetTypeTravaux()
+    {
+        List<TypeTravaux> typeTravaux = await _typeTravauxService.GetAllTypesTravaux();
+        return Ok(new ApiResponse
+        {
+            Data = typeTravaux,
+            IsSuccess = true,
+            Message = "Liste des types de travaux récupérés avec succès.",
+            StatusCode = 200
+        });
+    }
 }
