@@ -157,4 +157,10 @@ public class TypeTravauxService : ITypeTravauxService
 
         return await this.GetTypeTravaux(id);
     }
+
+    public async Task<List<TypeTravaux>> GetAllTypesTravaux()
+    {
+        List<TypeTravaux> results = await _dbContext.TypeTravaux.ToListAsync();
+        return results;
+    }
 }

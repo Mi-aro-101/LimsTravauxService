@@ -10,4 +10,5 @@ public interface ITypeTravauxService
     Task<TypeTravaux> CreateTypeTravaux(TypeTravauxDto typeTravauxDto);
     Task<TypeTravaux> GetTypeTravaux(int id);
     Task<TypeTravaux> UpdateTypeTravaux(int id, TypeTravauxDto typeTravauxDto);
+    Task<List<TypeTravaux>> GetAllTypesTravaux();
 }
