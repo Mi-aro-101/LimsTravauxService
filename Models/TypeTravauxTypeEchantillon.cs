@@ -14,11 +14,11 @@ public class TypeTravauxTypeEchantillon
     [Column("id_type_travaux")]
     public int IdTypeTravaux { get; set; }
     [JsonIgnore]
-    public TypeTravaux TypeTravaux { get; set; }
+    public TypeTravaux? TypeTravaux { get; set; }
 
     [Column("id_type_echantillon")]
     public int IdTypeEchantillon { get; set; }
     [ForeignKey("IdTypeEchantillon")]
-    public TypeEchantillon TypeEchantillon { get; set; }
+    public TypeEchantillon? TypeEchantillon { get; set; }
 
 }

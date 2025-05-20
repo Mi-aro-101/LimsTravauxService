@@ -8,9 +8,9 @@ public class TypeTravauxDto
     [JsonPropertyName("idTypeTravaux")]
     public int IdTypeTravaux { get; set; }
     [JsonPropertyName("code")]
-    public string Code { get; set; }
+    public string Code { get; set; } = string.Empty;
     [JsonPropertyName("designation")]
-    public string Designation { get; set; }
+    public string Designation { get; set; } = string.Empty;
     [JsonPropertyName("hasResultat")]
     public int HasResultat { get; set; }
     [JsonPropertyName("idDepartement")]
@@ -25,8 +25,10 @@ public class TypeTravauxDto
     public int HaveFormule { get; set; }
     [JsonPropertyName("formuleString")]
     public string? FormuleString { get; set; }
+    [JsonPropertyName("formuleBytes")]
+    public byte[]? FormuleBytes { get; set; }
 
     [JsonPropertyName("idtypeEchantillons")]
-    public ICollection<int> IdTypeEchantillons { get; set; }
+    public ICollection<int> IdTypeEchantillons { get; set; } = new List<int>();
 
 }

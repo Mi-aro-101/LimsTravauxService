@@ -84,6 +84,11 @@ public class TypeTravauxService : ITypeTravauxService
             await _dbContext.SaveChangesAsync();
 
             await transaction.CommitAsync();
+
+            if(typeTravauxDto.HaveFormule == 0)
+            {
+                await this.WriteBytesToFile(typeTravauxDto.FormuleBytes, typeTravauxDto.Code);
+            }
         }
 
         return await this.GetTypeTravaux(typeTravaux.IdTypeTravaux);
@@ -162,5 +167,17 @@ public class TypeTravauxService : ITypeTravauxService
     {
         List<TypeTravaux> results = await _dbContext.TypeTravaux.ToListAsync();
         return results;
+    }
+
+    public async Task WriteBytesToFile(byte[]? bytes, string fileName)
+    {
+        if(bytes != null)
+        {
+            var path = Path.Combine("./assets", $"{fileName}.txt");
+            await System.IO.File.WriteAllBytesAsync(path, bytes);
+        }
+        else{
+            throw new Exception("Le fichier n'est pas valide");
+        }
     }
 }
