@@ -180,4 +180,13 @@ public class TypeTravauxService : ITypeTravauxService
             throw new Exception("Le fichier n'est pas valide");
         }
     }
+
+    public async Task<TypeTravaux[]> SearchTypeTravaux(string search)
+    {
+        TypeTravaux[] results = await _dbContext.TypeTravaux
+            .Where(tt => tt.Designation.Contains(search) || tt.Code.Contains(search))
+            .Take(6)
+            .ToArrayAsync();
+        return results;
+    }
 }
