@@ -120,4 +120,28 @@ public class TypeTravauxController : ControllerBase
             StatusCode = 200
         });
     }
+
+    [HttpGet("search")]
+    public async Task<ActionResult<ApiResponse>> SearchTypeTravaux(string? search)
+    {
+        if(search == null) search = "";
+        TypeTravaux[] typeTravaux = await _typeTravauxService.SearchTypeTravaux(search);
+        try{
+            return Ok(new ApiResponse
+            {
+                Data = typeTravaux,
+                IsSuccess = true,
+                Message = "Liste des travaux récupérés avec succès.",
+                StatusCode = 200
+            });
+        }
+        catch(Exception ex){
+            return BadRequest(new ApiResponse
+            {
+                IsSuccess = false,
+                Message = ex.Message,
+                StatusCode = 400
+            });
+        }
+    }
 }
