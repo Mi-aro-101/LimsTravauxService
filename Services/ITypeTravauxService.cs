@@ -11,4 +11,5 @@ public interface ITypeTravauxService
     Task<TypeTravaux> GetTypeTravaux(int id);
     Task<TypeTravaux> UpdateTypeTravaux(int id, TypeTravauxDto typeTravauxDto);
     Task<List<TypeTravaux>> GetAllTypesTravaux();
+    Task<TypeTravaux[]> SearchTypeTravaux(string search);
 }

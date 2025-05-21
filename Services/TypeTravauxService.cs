@@ -163,4 +163,13 @@ public class TypeTravauxService : ITypeTravauxService
         List<TypeTravaux> results = await _dbContext.TypeTravaux.ToListAsync();
         return results;
     }
+
+    public async Task<TypeTravaux[]> SearchTypeTravaux(string search)
+    {
+        TypeTravaux[] results = await _dbContext.TypeTravaux
+            .Where(tt => tt.Designation.Contains(search) || tt.Code.Contains(search))
+            .Take(6)
+            .ToArrayAsync();
+        return results;
+    }
 }
